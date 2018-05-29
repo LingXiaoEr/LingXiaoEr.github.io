@@ -7,6 +7,20 @@
     <script type="text/javascript" src="./lib/popper.min.js"></script>
     <link rel="stylesheet" type="text/css" href="./lib/bootstrap/css/bootstrap.min.css">
     <script type="text/javascript" src="./lib/bootstrap/js/bootstrap.min.js"></script>
+    <script type="text/javascript">
+    function checkAbsence() {
+    	var missedPeople = "";
+    	$("input[type='checkbox']").each((index, item) =>{
+    		if (!item.checked) {
+    			missedPeople += item.value + ",";
+    		}
+    	})
+    	if (missedPeople.length) {
+    		missedPeople = missedPeople.substr(0, missedPeople.length -1)
+    	}
+    	alert(missedPeople);
+    }
+    </script>
 </head>
 
 <body>
@@ -20,22 +34,32 @@
                 <div class="controls">
                     <!-- Multiple Checkboxes -->
                     <label class="checkbox form-control">
-                        <input type="checkbox" value="Option one"> Option one
+                        <input type="checkbox" value="Option 1"> Option 1
                     </label>
                     <label class="checkbox form-control">
-                        <input type="checkbox" value="Option two"> Option two
+                        <input type="checkbox" value="Option 2"> Option 2
+                    </label>
+                    <label class="checkbox form-control">
+                        <input type="checkbox" value="Option 3"> Option 3
+                    </label>
+                    <label class="checkbox form-control">
+                        <input type="checkbox" value="Option 4"> Option 4
+                    </label>
+                    <label class="checkbox form-control">
+                        <input type="checkbox" value="Option 5"> Option 5
                     </label>
                 </div>
             </div>
-            <div class="control-group">
+
+        </fieldset>
+    </form>
+                <div class="control-group">
                 <label class="control-label"></label>
                 <!-- Button -->
                 <div class="controls">
-                    <button class="btn btn-success">确认</button>
+                    <button class="btn btn-success" onclick="checkAbsence()">确认</button>
                 </div>
             </div>
-        </fieldset>
-    </form>
 </body>
 
 </html>
