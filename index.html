@@ -11,28 +11,36 @@
     <script type="text/javascript">
     $(function() {
         _names.forEach((item) => {
-                $field = $("<label class='checkbox form-control'><input type='checkbox' value='" + item + "'> " + item + "</label>");
-                $field.on("click", (function(field) {
-                    return (event) => {
-                        field.css("background-color", "pink");
+            $field = $("<label class='checkbox form-control'><input type='checkbox' value='" + item + "'> " + item + "</label>");
+            $field.on("click", (function(field) {
+                return (event) => {
+                    if (event.target.type !== "checkbox") {
+                        if (field.hasClass("pinkBg")) {
+                            field.removeClass("pinkBg");
+                        } else {
+                            field.addClass("pinkBg");
+                        }
                     }
-                })($field)); $("#mainField").append($field);
+
+                }
+            })($field));
+            $("#mainField").append($field);
         })
 
     })
 
     function checkAbsence() {
-    	var $message;
-    	var $missedCount = 0;
+        var $message;
+        var $missedCount = 0;
         var missedPeople = "";
         $("input[type='checkbox']").each((index, item) => {
             if (!item.checked) {
                 missedPeople += item.value + ",";
-                $missedCount ++;
+                $missedCount++;
             }
         })
         if (!!$missedCount) {
-        	$message = "共" + $missedCount+ "人缺席:\n";
+            $message = "共" + $missedCount + "人缺席:\n";
             $message += missedPeople.substr(0, missedPeople.length - 1)
         }
         alert($message);
@@ -59,6 +67,10 @@
     label>input[type=checkbox]:checked {
     	background-color: red;
     }*/
+
+    .pinkBg {
+        background-color: pink;
+    }
     </style>
 </head>
 
