@@ -11,30 +11,39 @@
     <script type="text/javascript">
     $(function() {
         _names.forEach((item) => {
-            $("#mainField").append($("<label class='checkbox form-control'><input type='checkbox' value='" + item + "'> " + item + "</label>"))
+                $field = $("<label class='checkbox form-control'><input type='checkbox' value='" + item + "'> " + item + "</label>");
+                $field.on("click", (function(field) {
+                    return (event) => {
+                        field.css("background-color", "pink");
+                    }
+                })($field)); $("#mainField").append($field);
         })
 
     })
 
     function checkAbsence() {
+    	var $message;
+    	var $missedCount = 0;
         var missedPeople = "";
         $("input[type='checkbox']").each((index, item) => {
             if (!item.checked) {
                 missedPeople += item.value + ",";
+                $missedCount ++;
             }
         })
-        if (missedPeople.length) {
-            missedPeople = missedPeople.substr(0, missedPeople.length - 1)
+        if (!!$missedCount) {
+        	$message = "共" + $missedCount+ "人缺席:\n";
+            $message += missedPeople.substr(0, missedPeople.length - 1)
         }
-        alert(missedPeople);
+        alert($message);
     }
     </script>
     <style type="text/css">
-
     .AppTitle {
         font-size: 300% !important;
         text-align: center;
     }
+
     .checkbox.form-control {
         font-size: 250% !important;
     }
@@ -44,6 +53,12 @@
         height: 5rem;
         font-size: 300%;
     }
+    /*    .checkbox:checked {
+    	background-color: green;
+    }
+    label>input[type=checkbox]:checked {
+    	background-color: red;
+    }*/
     </style>
 </head>
 
