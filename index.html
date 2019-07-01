@@ -2,16 +2,26 @@
 <html>
 
 <head>
-    <title>❤凌云小可爱❤</title>
+    <title>点名</title>
+    <!-- <title>❤凌云小可爱❤</title> -->
     <script type="text/javascript" src="./lib/jquery-3.2.1.slim.min.js"></script>
     <script type="text/javascript" src="./lib/popper.min.js"></script>
     <link rel="stylesheet" type="text/css" href="./lib/bootstrap/css/bootstrap.min.css">
     <script type="text/javascript" src="./lib/bootstrap/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="./data.json"></script>
     <script type="text/javascript">
+    const classId = /classId=(\d)/i.test(window.location.search) ? window.location.search.match(/classId=(\d)/i)[1] : '1' //1 is the default class Id
+    let windowCachedStudentNames = localStorage["cachedStudentNames" + classId] || ""
+    if (!windowCachedStudentNames) {
+        localStorage["cachedStudentNames" + classId] = ""
+    }
+    const currentClassData = mainData["classData" + classId]
+    if (!currentClassData) {
+        alert("发生异常，请联系凌老师")
+    }
     $(function() {
-        let cachedStudentNames = localStorage.cachedStudentNames ? new Set(localStorage.cachedStudentNames.split(",")) : new Set()
-        _names.forEach((item) => {
+        let cachedStudentNames = windowCachedStudentNames ? new Set(windowCachedStudentNames.split(",")) : new Set()
+        currentClassData.names.forEach((item) => {
             $field = $("<label class='checkbox form-control'><input type='checkbox' value='" + item + "'> " + item + "</label>");
             if (cachedStudentNames.has(item)) {
                 $field.children()[0].checked = true
@@ -28,13 +38,13 @@
                             field.addClass("pinkBg");
                             cachedStudentNames.add(studentName)
                         }
-                        localStorage.cachedStudentNames = Array.from(cachedStudentNames).join(",")
+                        localStorage["cachedStudentNames" + classId] = Array.from(cachedStudentNames).join(",")
                     }
                 }
             })($field));
             $("#mainField").append($field);
         })
-
+        $(".AppTitle")[0].innerText = currentClassData.title
     })
 
     function checkAbsence() {
@@ -51,8 +61,16 @@
             $message = "共" + $missedCount + "人缺席:\n";
             $message += missedPeople.substr(0, missedPeople.length - 1)
         }
-        localStorage.cachedStudentNames = ""
+        localStorage["cachedStudentNames" + classId] = ""
         alert($message);
+        resetWholePage()
+    }
+
+    function resetWholePage() {
+        $(".checkbox").removeClass("pinkBg")
+        $(".checkbox").each( (index, oItem) => {
+            oItem.children[0].checked = false
+        })
     }
     </script>
     <style type="text/css">
@@ -70,11 +88,12 @@
         height: 5rem;
         font-size: 300%;
     }
+
     /*    .checkbox:checked {
-    	background-color: green;
+        background-color: green;
     }
     label>input[type=checkbox]:checked {
-    	background-color: red;
+        background-color: red;
     }*/
 
     .pinkBg {
@@ -87,7 +106,7 @@
     <form class="form-horizontal">
         <fieldset>
             <div id="legend" class="">
-                <legend class="AppTitle">高二（1）班点名</legend>
+                <legend class="AppTitle"></legend>
             </div>
             <div class="control-group">
                 <label class="control-label"></label>
